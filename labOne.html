@@ -164,7 +164,9 @@
                 <p style="color: white; overflow-wrap: break-word; width: 100%;">
                     This command does 100 iterations and gets the current time and transmits it back in each iteration to the computer.
                     From the first time to last, 2352 ms passed by.
-                    This means that each time stamp was sent in around 23.52 ms.
+                    This means that each time stamp was sent in around 23 ms which is around 43 messages a second.
+                    Each message was 12 characters and each character is a byte.
+                    This means that the data transfer rate was 43 * 12 = 512 bytes per second.
                 </p>
                 <img src="TIME_LOOP_OG.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
             </div>
@@ -172,18 +174,27 @@
             <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
                 <h5 style="color: white;">TIME LOOP ARRAY</h5>
                 <p style="color: white; overflow-wrap: break-word; width: 100%;">
-                    This command now adds the current time stamps to an array. When I call the SEND_TIME_DATA command to loop through the array, it shows that 2 ms passed between the first and last elements.
-                    This means it took 0.02 ms each.
+                    This command now adds the current time stamps to an array. When I call the SEND_TIME_DATA command to loop through the array, it shows that 10 ms passed between the first and last elements.
+                    This means it took 0.1 ms each.
+                    Each message was 12 characters and each character is a byte.
+                    This means that the data transfer rate was 120 bytes per ms.
                 </p>
                 <img src="time_loop_array.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="send_time_data.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
             </div>
 
             <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
                 <h5 style="color: white;">TEMP_READINGS</h5>
                 <p style="color: white; overflow-wrap: break-word; width: 100%;">
                     This command now adds the temp readings that pair with the time stamps.
+                    I modified GET_CURR_TIME_LOOP to collect analog temperature readings at the same time it got the current time in milliseconds.
+                    I used the Apollo3 example sketch, Example02_AnalogRead, for the temperature readings
                 </p>
-                <img src="time_loop_array.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="new_time_loop_array.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="tempReadings.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="setupTempReading.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="get_temp_readings_loop.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="temp_readings_real.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
             </div>
 
             <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
@@ -194,6 +205,15 @@
                     This allows data to be recorded much faster since it is limited mainly by sensor reads and memory access rather than BLE.
                     This second logging method is better for high-rate data collection and more reliable timing, but it is not real time and is held back by available RAM.
                     With only 384 kB of memory and about 8 bytes per timestamp/temperature pair, the Artemis can store tens of thousands of samples before sending them.
+                </p>
+            </div>
+
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <h5 style="color: white;">Differences Between Two Methods</h5>
+                <p style="color: white; overflow-wrap: break-word; width: 100%;">
+                    I learned a lot about the BLE library and how to interact with it from my computer.
+                    I ran into some problems understanding what some of the tasks were asking for, but I eventually figure it out.
+                    I faced a lot of minor errors with not properly updating the command enumerations on both the Arduino and my computer.
                 </p>
             </div>
         </section>
