@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grayscale - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" style="background-color: rgb(32, 32, 32);">
+        <!-- Navigation-->
+        <section style="align-items: center; display: flex; justify-content: center; margin-top: 2%;">
+            <a href="index.html" style="color: white; align-self: center; display: flex; font-size: x-large;">Home</a>
+        </section>
+        <!-- About-->
+        <section style="align-items: center; display: flex; margin-top: 2%; max-width: 100%; padding: 10px; flex-direction: column;">
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Setting Up IMU</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Artemis IMU connections and running example code:
+                </p>
+                <img src="./lab2images/IMG_7634.jpg" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+            <div style="margin-bottom: 2%;">
+                <iframe width="1416" height="805" src="https://www.youtube.com/embed/NP3-bCtHuPI" title="IMU Example Code" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>            </div>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    AD0_VAL represents the logic level (0 or 1) of the AD0 pin on the ICM-20948 sensor. It is the LSB address of the I^2C bus. Below is a video of the startup light sequence.
+                </p>
+            </div>
+            <div style="margin-bottom: 2%;">
+                <iframe width="1416" height="805" src="https://www.youtube.com/embed/E9BK8r8uE2g" title="Startup Lights" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>            
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Accelerometer</h1>
+            </div>
+            <div style="width: 100%; max-width: 1000px;">
+                <h5 style="color: white;">Output at {-90, 0, 90} for Pitch and Roll</h5>
+            </div>
+            <div style="margin-bottom: 2%;">
+                <iframe width="617" height="1098" src="https://www.youtube.com/embed/oCkS0gDuj5E" title="output at {-90, 0, 90}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>            
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Code for converting accelerometer data to angles in degrees:
+                </p>
+                <img src="./lab2images/accelerometer_code.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The accelerometer data is pretty accurate, but there is a lot of noise.
+                    Using roll measurements from 90 degrees low and 90 degrees high, we can see that using two point calibration, the calibrated response is on average the same as the reference high and low of 90 degrees and -90 degrees respectively. 
+                </p>
+                <img src="./lab2images/twoPointCalibration.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab2images/twoPointCalibrationAverages.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below is accelerometer data of the IMU sitting flat on my table with no movement. There is a lot of noise.
+                </p>
+                <img src="./lab2images/accelerometerData.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below is the fourier transform graphs for both the roll and pitch data.
+                    Both the roll and pitch graphs have a very large spike at 0 Hz, which means the board was sitting at a steady tilt during the measurement.
+                    The rest of the graph shows small values spread across many frequencies, which indicates normal sensor noise and no strong repeated shaking at a specific frequency.
+                </p>
+                <img src="./lab2images/fourierTransformGraphs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    From the fourier transforms, we can see that there are no strong peaks at higher frequencies.
+                    Because at higher frequencies, noise is mostly small and spread out, the "real" motion is in the low hz range, and higher frequencies are just noise.
+                    Using these formulas from lecture:
+                </p>
+                <img src="./lab2images/frequencyConversion.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab2images/alphaCalculations.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I calculated an alpha of 0.0724 for my lowpass filter with a cutoff frequency of 5hz.
+                </p>
+                <img src="./lab2images/rollAndPitchWithFilters.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    In the graphs above, most of the noise is taken out and the data remains much more steady over time with much less noise.
+                </p>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Gyroscope</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below are graphs comparing the output of the gyroscope to the pitch, roll, and yaw values from the accelerometer and the filtered response (low pass filter with alpha of 0.0724 like above).
+                    They differ in how little noise gyroscopes have compared to accelerometers.
+                    I also noticed that when I left the IMU sitting in a stationary position, the gyroscope would quickly drift.
+                    This caused me to have to start the gyroscope calculations at {0, 0, 0} to get more accurate readings.
+                </p>
+                <img src="./lab2images/gyr_acc_pitch_graph_3.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab2images/gyr_acc_roll_graph_2.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab2images/gyro_yaw_graph.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p></p>
+                <img src="./lab2images/samplingDelay.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Both of these graphs were collected with 1000 samples.
+                    The accumulated error seemed to both grow over time, but more so for a larger delay.
+                </p>
+                <img src="./lab2images/complimentaryFilter.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Adjusting for multiple different alphas, I couldn't quite perfectly balance the gyroscope and accelerometer to remove
+                    the noise while also maintaining the accuracy of the accelerometer.
+                    I was holding it up and quickly jolted it to pitch it up and down and it responded with less noise than just the accelerometer data.
+                    The drift did not accumulate as bad as returning it to 0 degrees on my flat table, got it back to 0 very closely.
+                </p>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Sample Data</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <img src="./lab2images/rollAndPitchWithFilters.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    For all of the data collected, I didn't wait for IMU data to be ready to move through the loop.
+                    I also didn't use any delays or serial.print statements.
+                    In the picture above, it was of 100 samples and took  246 ms which is 2.46 ms a sample.
+                    I had an if else statement that checked whether IMU data was ready and if it was stored it,
+                    but if it wasn't, it printed something in the serial monitor to tell me.
+                    After all the data I collected above, I never once had it print out.
+                    This tells me that my main loop never ran faster than the IMU produced new values.
+                </p>
+                <img src="./lab2images/arrays.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    This is the code block I used to collect the gyroscope and accelerometer data simultaneously.
+                    I stored the time each sample was collected and all of them were put in arrays.
+                    I stored the data for pitch, roll, and yaw for gyroscope and accelerometer in completely different arrays.
+                    I did this so I can easily copy and paste the string outputs into a list.
+                </p>
+                <img src="./lab2images/dataCollectionMethod.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab2images/dataCollectionMethod1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I used strings to send my data as but stored them as floats in the arrays on the board.
+                    This allowed me to do math on the board with the floats, and sending them as strings was just because
+                    I was just manually copying and pasting the data to create lists in Python to be plotted out as seen above.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The Artemis Nano has 384kb of RAM.
+                    This means I could technically use hundreds of kilobytes of ram for arrays.
+                    Since floats are 4 bytes, I could at most allocate close to 90000 floats.
+                    This would be a stretch though, since I would barely have any space for any other parts of my program to use the RAM.
+                </p>
+                <img src="./lab2images/dataCollectionMethod2.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab2images/5secData2.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab2images/arrayLengths.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I stored 5000 samples for each of the data points, and it took 135179 - 121726 = 13453 milliseconds = 13.453 seocnds to collect all the samples.
+                    As you can see I am in Jupyter Notebook where I received the time data and IMU data over bluetooth.
+                </p>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Stunt Recording</h1>
+            </div>
+            <iframe width="617" height="1098" src="https://www.youtube.com/embed/U5KYR8p1Wsc" title="car lab 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </section>
+    </body>
+</html>
