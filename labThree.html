@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grayscale - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" style="background-color: rgb(32, 32, 32);">
+        <!-- Navigation-->
+        <section style="align-items: center; display: flex; justify-content: center; margin-top: 2%;">
+            <a href="index.html" style="color: white; align-self: center; display: flex; font-size: x-large;">Home</a>
+        </section>
+        <!-- About-->
+        <section style="align-items: center; display: flex; margin-top: 2%; max-width: 100%; padding: 10px; flex-direction: column;">
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Prelab</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    In the prelab I read through the datasheet and manual for the VL53L1X ToF sensor.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I don't want to have to continuously turn on and off the ToF sensors, 
+                    so I will just change the address of one of them at the beginning. 
+                    I will do this by using the built in .setI2CAddress() function. 
+                    By turning off the other ToF sensor and then setting the I2C address 
+                    of the one that is on, I can set the I2C address. 
+                    I can turn the ToF sensor on and off with the XSHUT pin on the sensor 
+                    and the a0 pin on the arduino.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    To get the best picture of the environment, I will place one 
+                    sensor at the front, and one on the right. 
+                    This way, I can detect what is in front of the robot and 
+                    what is at the side.
+                    I don't need a sensor at the rear since I expect to only be moving forward, 
+                    and knowing what is to my right can help me know if there is an obstacle to my right. 
+                    This does mean I will be blind on my left side, but I only have two sensors, so I just chose the right side.
+                </p>
+                <img src="./lab3images/schematic.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Battery Powered Artemis</h1>
+            </div>
+            <iframe width="1008" height="1025" src="https://www.youtube.com/embed/4vQFjlVxhWg" title="lab3 battery" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I had to use opposite colors because when the red wire on the battery is positive, 
+                    but the red wire on the JST connector is negative.
+                </p>
+                <img src="./lab3images/battery.jpg" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">ToF Sensor Wiring</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    On this ToF sensor, I also soldered the XSHUT pin wire.
+                    I used the datasheet to know that the blue wire should go to the 
+                    SDA line and the yellow wire to the SCL line.
+                </p>
+                <img src="./lab3images/ToF.jpg" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The datasheet says that the default I2C address is 0x52, 
+                    but running Exampl05_wire_I2C said the device was at 0x29. 0x52 is 0b1010010 and 0x29 is 0b101001. 
+                    0x52 is just shifted right one bit to get the address of 0x29 because the least 
+                    significant bit of 0x52 is used to set read or write which means the actual bits for the address is 0x29.
+                </p>
+                <img src="./lab3images/address.jpg" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">ToF Sensor Testing</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I chose the short range mode since 1.3 meters seemed like a large enough distance 
+                    to get a good sense of the environment. The short range mode also provides better 
+                    readings with sunlight and noise compared to the long range mode. I don't think 
+                    I'll need anything more than 1.3 meters, so I am sticking with short range mode.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    the image below is my testing setup, using a large 90 cm ruler to measure distance. 
+                    I taped the sensor to a rubber block and then on top of a soap box. 
+                    I used the robotics box as the target to measure distance.
+                </p>
+                <img src="./lab3images/distanceSetup.jpg" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The data below is from 10 samples at 100, 200, etc. millimeters in distance compared to the actual distances collected at those distances. 
+                    the data is very close to the real distances and some of the differences could just be from measuring error in the setup.
+                </p>
+                <img src="./lab3images/actualDistVsReal.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Readings for the ranging time were surprisingly consistent. 
+                    All readings with .stopRanging had a 51 ms time. 
+                    All readings without .stopRanging had a 100 ms time. 
+                    This might be because of the 100 ms default timing budget, but I am uncertain.
+                    The code below is how I timed it.
+                </p>
+                <img src="./lab3images/timingCode.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Second ToF Sensor</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I wired an additional wire to the XSHUT pin and the a0 pin on the arduino, to shut off the sensor so I could change the address 
+                    at the beginning of the script.
+                </p>
+                <img src="./lab3images/twoToFsensors.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab3images/twoToFmeasurements.jpg" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+
+                </p>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Loop Execution</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    The code below doesn't let my code hang while it waits for the sensor to finish a measurement.
+                </p>
+                <img src="./lab3images/noHangupCodeQ9.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    In the image below, you can see that my code has an initial loop time of around 16-17 ms when it actual gets the 
+                    sensor data and prints it out. I suspect that the larger time is due to the print statements slowing down the loop. 
+                    When there is no data available, the loop takes 6-7 ms. The current limiting factor is the print statements and turning the 
+                    ranging on and off.
+                </p>
+                <img src="./lab3images/loopTimeQ9.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+            
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">ToF and IMU Data Over Bluetooth</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I added 3 commands to the bluetooth code from lab 1.
+                </p>
+                <img src="./lab3images/bluetoothCode.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    ToF data against time:
+                </p>
+                <img src="./lab3images/tofVsTime.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    IMU data against time:
+                </p>
+                <img src="./lab3images/imuVsTime.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+        </section>
+    </body>
+</html>
