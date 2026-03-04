@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grayscale - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" style="background-color: rgb(32, 32, 32);">
+        <!-- Navigation-->
+        <section style="align-items: center; display: flex; justify-content: center; margin-top: 2%;">
+            <a href="index.html" style="color: white; align-self: center; display: flex; font-size: x-large;">Home</a>
+        </section>
+        <!-- About-->
+        <section style="align-items: center; display: flex; margin-top: 2%; max-width: 100%; padding: 10px; flex-direction: column;">
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Prelab</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    In the prelab I first read the documentation and datasheet for the dual motor driver. 
+                    I then sketched out the design of my circuit.
+                </p>
+                <img src="./lab4images/wiringSketch.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Since I need analog pins, I am using two for each motor driver. 
+                    One side of motors will be controlled by pins A2 and A3. 
+                    The other side of motors will be controlled by pins A14 and A15. 
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Powering the Artemis and motor drivers from separate batteries means that 
+                    sudden changes in voltage from the motors drawing a lot of power won't affect the Artemis itself. 
+                    This prevents the Artemis from turning off if the battery drops too low in voltage where it can no 
+                    longer properly power the Artemis anymore.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    In terms of wiring, I will use stranded wires and plan to use jumper cables and header pins wherever 
+                    possible so that I can easily add things to my robot. This means that more space will be used 
+                    inside the robot's body, but I plan on cutting things off the frame to make everything fit properly. 
+                    I also plan on routing the PWM signal wires that go to the motor drivers farther from the power wires 
+                    and motors.
+                </p>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Motor Driver Wiring</h1>
+            </div>
+            <iframe width="1008" height="1025" src="https://www.youtube.com/embed/4vQFjlVxhWg" title="lab3 battery" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    While testing my motor driver wiring, I hooked up my driver to an external power supply, 
+                    and I powered it with 3.7 volts which is the same as the 850mah battery's voltage.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Using the analogWrite commands below, I ran the motor at about a 60% duty cycle by using 150/255 for the PWM number.
+                </p>
+                <img src="./lab4images/analogWriteCommands.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Hooking it up to an oscilloscope, you can see how the motor is on for about 60% of the time. 
+                    Using PWM, a 60% duty cycle means the motor is on for 60% of the time which basically emulates 
+                    the motor spinning at 60% of it's max power.
+                </p>
+                <img src="./lab4images/oscilloscope.jpg" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Motor Drivers Connected to Motors</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below is how I wired and stuffed everything down. 
+                    I taped the orange and white PWM signal wires to the left side of the robot.
+                </p>
+                <img src="./lab4images/wiredUp.jpg" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I ran one motor back and forth fully on batteries in the video below.
+                </p>
+                <iframe width="617" height="1098" src="https://www.youtube.com/embed/vQUaJufV-FI" title="motor spinning robot" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then ran both motors back and forth fully on batteris in the video below.
+                </p>
+                <iframe width="617" height="1098" src="https://www.youtube.com/embed/0iWTM75HyQg" title="both motors spinning" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Robot Driving Around</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    For the lower PWM value, I tested the motor driving on the ground going backwards and forwards. 
+                    I found that 50/255 could drive the robot forwards and backwards, but I noticed the right motor 
+                    had trouble moving and would get stuck whereas the left wheels spun up quickly.
+                    Turning in circles needed a PWM value of 150/255 which barely got the robot to spin around.
+                </p>
+
+                <p style="color: white; overflow-wrap: break-word;">
+                    As seen in the video, the uncalibrated robot veered to the left when driving forward at a PWM value of 50/255.
+                </p>
+                <iframe width="617" height="1098" src="https://www.youtube.com/embed/giOa3fo6Es4" title="uncalibrated motors" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                
+                <p style="color: white; overflow-wrap: break-word;">
+                    To adjust for the veering, I multiplied the left wheels to spin at 1.3 times the speed of the right wheels. 
+                    Below is how I calibrated it in code.
+                </p>
+                <img src="./lab4images/calibrationCode.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below is a video of my robot with calibrated motors. In the middle of the run, my robot slipped on something which caused it to make a sharp angle, but kept driving in a relatively straight line after that.
+                </p>
+                <iframe width="617" height="1098" src="https://www.youtube.com/embed/rjV2i-bF6Ms" title="Calibrated Robot" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+                <p style="color: white; overflow-wrap: break-word;">
+                    The image below is my code for open loop control
+                </p>
+                <img src="./lab4images/Openloopcontrol.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The video below shows the robot driving around in open loop control.
+                </p>
+                <iframe width="617" height="1098" src="https://www.youtube.com/embed/2iOWdKD03_k" title="robot driving around" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                
+            </div>
+        </section>
+    </body>
+</html>
