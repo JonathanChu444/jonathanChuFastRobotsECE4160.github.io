@@ -38,7 +38,8 @@
                 </p>
                 <img src="./lab5images/pidcode.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
                 <p style="color: white; overflow-wrap: break-word;">
-                    I then sent data back with these two if statements. Before the while loop where my PID controlled motor commands 
+                    I then sent data back with these two if statements. I stored the data in arrays before sending them back over bluetooth with for loop commands like previous labs. 
+                    Before the while loop where my PID controlled motor commands 
                     are, I initialize i and k to 0 and every time the loop completes, I update them. I used two separate index counters 
                     so that I could decouple them later on during extrapolation.
                 </p>
@@ -52,7 +53,11 @@
             </div>
             <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
                 <p style="color: white; overflow-wrap: break-word;">
-                    I tested my robot 2 meters away. The video below shows it in action and overshooting a bit and coming back.
+                    I tested my robot 2 meters away. The video below shows it in action and overshooting a bit and coming back. 
+                    I used Kp/Ki/Kd values 150/0/30 as I found anything slower than 150 wouldn't cause the robot to overshoot, and I wanted to test overshooting. 
+                    I also wanted it to be a little jittery and so I tested and found that 30 gave enough adjustments, but wasn't too jittery. 
+                    I didn't change Ki as I saw a large enough improvement from what I wanted with Kp and Kd. 
+                    I used the short range mode for the same reasons as in lab 2 since it is more accurate and had still had decent range.
                 </p>
                 <iframe width="617" height="1096" src="https://www.youtube.com/embed/hn8Olvcv7HM" title="Pid" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
