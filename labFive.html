@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grayscale - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" style="background-color: rgb(32, 32, 32);">
+        <!-- Navigation-->
+        <section style="align-items: center; display: flex; justify-content: center; margin-top: 2%;">
+            <a href="index.html" style="color: white; align-self: center; display: flex; font-size: x-large;">Home</a>
+        </section>
+        <!-- About-->
+        <section style="align-items: center; display: flex; margin-top: 2%; max-width: 100%; padding: 10px; flex-direction: column;">
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Prelab</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I first tested how to control the robot over bluetooth with my "DRIVE_FORWARD" command. 
+                    It takes an input of the PWM signal I want the motors to spin at and spins them for 1 second. 
+                </p>
+                <img src="./lab5images/prelab1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then started programming the PID control command. 
+                    The main part of my PID control command is in the photo below where the robot first waits for new 
+                    sensor data, then calculates the PID controlled command.
+                </p>
+                <img src="./lab5images/pidcode.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then sent data back with these two if statements. Before the while loop where my PID controlled motor commands 
+                    are, I initialize i and k to 0 and every time the loop completes, I update them. I used two separate index counters 
+                    so that I could decouple them later on during extrapolation.
+                </p>
+                <img src="./lab5images/prelabdebuggingdata.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">PID Loop in Action</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I tested my robot 2 meters away. The video below shows it in action and overshooting a bit and coming back.
+                </p>
+                <iframe width="617" height="1096" src="https://www.youtube.com/embed/hn8Olvcv7HM" title="Pid" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+            </div>
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Extrapolation</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Averaging the distance between readings, I got 68.14 ms between each reading when it was in the PID loop.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Instead of waiting for new data, I just used the last reading and got the data below with 50/0/30 Kp/Ki/Kd. 
+                    The data was jittery and I couldn't really smooth it out with different pid constants. 
+                    I think it's because it is sampling so infrequently and it thinks the distance is basically staying the same between readings.
+                </p>
+                <img src="./lab5images/part2code.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/extrapPart2tof.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/extrapPart2motorinputs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then used the simple linear extrapolation algorithm and got the data below with 50/0/30 Kp/Ki/Kd. 
+                    I also couldn't smooth out the motor inputs and I suspect it is for the same reason why
+                </p>
+                <img src="./lab5images/part4code.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/part4code1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/extrapPart4tof.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/extrapPart4motorInputs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+            
+        </section>
+    </body>
+</html>
