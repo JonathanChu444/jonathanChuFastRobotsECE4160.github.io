@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grayscale - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" style="background-color: rgb(32, 32, 32);">
+        <!-- Navigation-->
+        <section style="align-items: center; display: flex; justify-content: center; margin-top: 2%;">
+            <a href="index.html" style="color: white; align-self: center; display: flex; font-size: x-large;">Home</a>
+        </section>
+        <!-- About-->
+        <section style="align-items: center; display: flex; margin-top: 2%; max-width: 100%; padding: 10px; flex-direction: column;">
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Prelab</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Just like in lab 5, I developed a bluetooth command called "STABILIZE_ORIENTATION". 
+                    It takes in the same inputs as my "DRIVE_TO_WALL_PID" command. 
+                    It takes in the Kp, Ki, and Kd values for PID control. 
+                    It also takes in the length of time in milliseconds for how long I want the robot to keep correcting its orientation. 
+                    It also takes in a 0 or 1 value for whether or not I want the robot to stop after it has corrected its orientation.
+                </p>
+                <img src="./lab6images/preLabBluetoothCommand.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then sent data back with these two if statements. I stored the data in arrays before sending them back over bluetooth with for loop commands like previous labs. 
+                    Before the while loop where my PID controlled motor commands 
+                    are, I initialize i and k to 0 and every time the loop completes, I update them. I used two separate index counters 
+                    so that I could decouple them later on during extrapolation.
+                </p>
+                <img src="./lab6images/prelabDataSending.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I used a notification handler similar to other labs to receive the data and store them into an array.
+                </p>
+                <img src="./lab6images/notificationHandler.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Lab Discussion</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    You should integrate your gyroscope to get an estimate for the orientation of the robot.
+                    Are there any problems that digital integration might lead to over time? Are there ways to minimize these problems?
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Integreating the gyroscope to get an estimate for the orientation of the robot works, but quickly the readings drift as discussed in the IMU lab. 
+                    Any measurement offset is integrated and adds up over time causing the drift, so an imu that starts at 0 degrees yaw will drift to 10 degrees soon without even moving. 
+                    I could minimize it by using a complimentary filter like in the IMU lab, where I used the accelerometer to correct the gyroscope since the accelerometer doesn't integrate 
+                    over time and doesn't drift. However, this solution didn't really work well last time as seen by the image below where the complimentary filtered data was still pretty 
+                    noisy, and also, still drifted a little bit.
+                </p>
+                <img src="./lab6images/complimentaryFilter.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word; margin-bottom: 60px;">
+                    Considering the hint from the lab, I took a look at the DMP and tested Example7_DMP_Quat6_EulerAngles from the ICM 20948 library. 
+                    The DMP was far superior in testing, never drifting, and wasn't noisy at all.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Are there limitations on the sensor itself to be aware of? 
+                    What is the maximum rotational velocity that the gyroscope can read (look at spec sheets and code documentation on github). 
+                    Is this sufficient for our applications, and is there a way to configure this parameter?
+                </p>
+                <p style="color: white; overflow-wrap: break-word; margin-bottom: 60px;">
+                    Yes, on the ICM 20948 IMU's data sheet, the maximum rotational velocity that the gyroscope can read is 2000 degrees per second (dps). 
+                    This limitation probably won't affect me since my robot is not capable of making 6 rotations in one second.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Does it make sense to take the derivative of a signal that is the integral of another signal. 
+                    Think about derivative kick. Does changing your setpoint while the robot is running cause problems with your implementation of the PID controller? 
+                    Is a lowpass filter needed before your derivative term?
+                </p>
+                <p style="color: white; overflow-wrap: break-word; margin-bottom: 60px;">
+                    If I was using the gyroscope alone and integrating the data, taking the derivative would be redundant since you are literally just differentiating the integral which 
+                    gives you the same value before integrating. However, I chose to use the DMP, so I still needed to take the derivative.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Think about derivative kick. Does changing your setpoint while the robot is running cause problems with your implementation of the PID controller? 
+                </p>
+                <p style="color: white; overflow-wrap: break-word; margin-bottom: 60px;">
+                    Changing my setpoint while the robot is running caused issues because it would form a massive jump in derivative values since the derivative is calculated with the current error minus 
+                    the previous error. If the current error jumped all of a sudden because I changed the setpoint, it would cause the derivative to spike. A lowpass filter could solve this since it only
+                    takes a little bit of the current derivative compared to taking a lot of the added portions of the past derivatives to make the derivative for the control.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Is a lowpass filter needed before your derivative term?
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    A lowpass filter would be helpful for smoothing out the jump. Below is how I implemented it. 
+                    I used an alpha of 0.05 since that number was still responsive enough for what I wanted, without making the derivative jump too much.
+                </p>
+                <img src="./lab6images/lowPassFilter.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Programming Implementation</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Have you implemented your code in such a way that you can continue sending an processing Bluetooth commands while your controller is running?
+                </p>
+                <p style="color: white; overflow-wrap: break-word; margin-bottom: 60px">
+                    As explained above, I made it so that my bluetooth command takes in multiple inputs to tune my Kp, Ki, and Kd values, and also the minimum motor speed. 
+                    The first input is for Kp, the second if for Ki, the third is for Kd, the fourth is for the amount of time I want to run the robot's orientation control loop, 
+                    the fifth is for whether or not I want the robot to stop after it has corrected its orientation, and the sixth input is for the minimum motor PWM signal the controller 
+                    can send to the drivers. Setting the minimum PWM signal helps me account for loss in battery charge and make it so the robot isn't wasting energy trying to rotate the robot 
+                    with too little power. It also makes the changes in yaw orientation more snappy since the motor control signal doesn't need to build up to the minimum to get it moving.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Think about future applications of your PID controller with regards to navigation or stunts. Will you need to be able to update the setpoint in real time?
+                </p>
+                <p style="color: white; overflow-wrap: break-word; margin-bottom: 60px">
+                    Yes, I will need to be able to update the setpoint in real time since I will need to drive around things and follow a specific path. 
+                    This would require needing to change the setpoint over time.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Can you control the orientation while the robot is driving forward or backward? 
+                </p>
+                <p style="color: white; overflow-wrap: break-word; margin-bottom: 60px">
+                    For now, with my current code, I cannot. Planning ahead, I don't want my robot to drive forward, stop, and turn. 
+                    I want the robot to be able to make smooth arcing drive trajectories, so changing orientation while the robot is 
+                    driving forward or backward will be necessary. For this to work, I would need to use the linear PID with my orientation PID control loop.
+                </p>
+                <!-- <img src="./lab5images/part2code.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/extrapPart2tof.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/extrapPart2motorinputs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then used the simple linear extrapolation algorithm and got the data below with 50/0/30 Kp/Ki/Kd. 
+                    I also couldn't smooth out the motor inputs and I suspect it is for the same reason why
+                </p>
+                <img src="./lab5images/part4code.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/part4code1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/extrapPart4tof.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab5images/extrapPart4motorInputs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%> -->
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Testing</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below are plots testing with Kp = 0.3, Ki = 0.0, and Kd = 0.9 with a minimum motor speed of 150 with the robot's setpoint set to 0 degrees.
+                    With these values, the robot overshoots slightly, but is still very responsive to when it is kicked. 
+                    The steep motor inputs compared to the steep change in angle shows it is pretty responsive to being kicked.
+                </p>
+                <img src="./lab6images/motorInputs1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab6images/dmpYaws.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">References</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I referenced Evan Leong's website: https://evnleong.github.io/MAE4190/lab6.html, for some of the details and hints to answer the discussion questions.
+                </p>
+            </div>
+        </section>
+    </body>
+</html>
