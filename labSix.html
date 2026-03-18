@@ -65,10 +65,14 @@
                     noisy, and also, still drifted a little bit.
                 </p>
                 <img src="./lab6images/complimentaryFilter.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-                <p style="color: white; overflow-wrap: break-word; margin-bottom: 60px;">
+                <p style="color: white; overflow-wrap: break-word;">
                     Considering the hint from the lab, I took a look at the DMP and tested Example7_DMP_Quat6_EulerAngles from the ICM 20948 library. 
-                    The DMP was far superior in testing, never drifting, and wasn't noisy at all.
+                    The DMP was far superior in testing, never drifting, and wasn't noisy at all. I modified the DMP to have an output data rate 
+                    (ODR) of 18.33 hz by changing the value variable below to 2. As explained in this link: https://fastrobotscornell.github.io/FastRobots-2026/tutorials/dmp.html, 
+                    by slowing down the output rate of the DMP, the control loop should run faster than the DMP can generate data, so that the queue storing the data, doesn't fill 
+                    up too much, causing a memory overflow, causing the chip to crash.
                 </p>
+                <img src="./lab6images/odr.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
                 <p style="color: white; overflow-wrap: break-word;">
                     Are there limitations on the sensor itself to be aware of? 
                     What is the maximum rotational velocity that the gyroscope can read (look at spec sheets and code documentation on github). 
@@ -134,18 +138,28 @@
                     I want the robot to be able to make smooth arcing drive trajectories, so changing orientation while the robot is 
                     driving forward or backward will be necessary. For this to work, I would need to use the linear PID with my orientation PID control loop.
                 </p>
-                <!-- <img src="./lab5images/part2code.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-                <img src="./lab5images/extrapPart2tof.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-                <img src="./lab5images/extrapPart2motorinputs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-
                 <p style="color: white; overflow-wrap: break-word;">
-                    I then used the simple linear extrapolation algorithm and got the data below with 50/0/30 Kp/Ki/Kd. 
-                    I also couldn't smooth out the motor inputs and I suspect it is for the same reason why
+                    Below is how I started the DMP and got in all the inputs.
                 </p>
-                <img src="./lab5images/part4code.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-                <img src="./lab5images/part4code1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-                <img src="./lab5images/extrapPart4tof.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-                <img src="./lab5images/extrapPart4motorInputs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%> -->
+                <img src="./lab6images/codeInit.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below is how I read DMP inputs. It uses the extrapolation algorithm from lab 5 to fill in the gaps of where the robot is 
+                    since the output data rate (ODR) of the DMP is 18.33 hz which was too slow for the robot to wait on.
+                </p>
+                <img src="./lab6images/codeDMPreading.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below is how I computed the PID motor control. It is almost identical to the linear PID controller.
+                </p>
+                <img src="./lab6images/pid.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The DMP on my robot reads that if the robot is angled to the left of 0 degrees, it is a negative angle, 
+                    and if the robot is angled to the right of 0 degrees, it is a positive angle. 
+                    This means that my PID controller will give a negative PWM value if the robot is to the left of 0 degrees, 
+                    and it will return a positive PWM value if the robot is to the right of 0 degrees. 
+                    I combined this with how differential drive robots work to make one side go forward and one side backwards to 
+                    get the robot to turn in place.
+                </p>
+                <img src="./lab6images/motorcontrols.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
             </div>
 
 
@@ -161,6 +175,19 @@
                 </p>
                 <img src="./lab6images/motorInputs1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
                 <img src="./lab6images/dmpYaws.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below are videos of me moving my robot around. I taped over the tires because there was too much friction 
+                    between the floor and the rubber tires which caused the robot to get stuck on my carpet.
+                </p>
+                <iframe width="402" height="715" src="https://www.youtube.com/embed/Wwhew_Tg8Js" title="robot orientation PID 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="402" height="715" src="https://www.youtube.com/embed/sgI4tUJGM7I" title="robot orientation PID 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then changed the setPoint mid run. 
+                    The results are below.
+                </p>
+                <img src="./lab6images/setpoints.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab6images/setpointmotorinputs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab6images/setpointdmpyawspng.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
             </div>
 
 
