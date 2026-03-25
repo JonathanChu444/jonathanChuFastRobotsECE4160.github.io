@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grayscale - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" style="background-color: rgb(32, 32, 32);">
+        <!-- Navigation-->
+        <section style="align-items: center; display: flex; justify-content: center; margin-top: 2%;">
+            <a href="index.html" style="color: white; align-self: center; display: flex; font-size: x-large;">Home</a>
+        </section>
+        <!-- About-->
+        <section style="align-items: center; display: flex; margin-top: 2%; max-width: 100%; padding: 10px; flex-direction: column;">
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Estimated Drag and Momentum</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I used a pwm value of 130/255 which is 0.509803921569 the max PWM/u I can give to my robot. 
+                    I then drove my robot into the wall at a constant 130/255 about 1.8 meters away for 2 seconds as seen 
+                    in the video below.
+                </p>
+                <iframe width="617" height="1098" src="https://www.youtube.com/embed/EqZesbKrYFs" title="130/255 PWM for 2 seconds" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then used sent the ToF readings over bluetooth and made the plot below. 
+                    The yellow line roughly shows the steady state speed of 1.87096774194 meters per second.
+                    I got 1.87 m/s by taking the first and last point on the line and subtracting the distances 
+                    and getting the difference in time and dividing the two as seen in my calculations. 
+                </p>
+                <img src="./lab7images/steadyStateSpeed.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab7images/motorInputVsTimeSteadyStateSpeed.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab7images/calculationsSteadyStateSpeed.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The yellow line shown in the graph below shows an estimate of the speed at 87.0340167753% of the steady state speed. 
+                    I got that speed of 1.62837837838 m/s by getting the difference in distances between 
+                    the two points of the line and then getting the difference in times between the two 
+                    points and dividing them to get the speed of 1.62837837838 m/s, which took 1.055 seconds
+                    to get to. So my rise time was 1.055 seconds, and the speed at 90% rise time was 
+                    1.62837837838 m/s.
+                </p>
+                <img src="./lab7images/87PercentRiseTime.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab7images/riseTime.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Initalizing the Kalman Filter</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    To get the d and m term I used the examples equations from lecture below.
+                </p>
+                <img src="./lab7images/kfLectureExample.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab7images/dragTermCalculations.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then used the state space equations from lecture to get my A and B matrices. 
+                    I made C [1 0] because the "position" values are positive distances from the wall directly 
+                    from the ToF sensor.
+                </p>
+                <img src="./lab7images/kfLectureAB.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab7images/ABcalculationsPython.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then defined my process noise and sensor noises. I will discuss later the noises 
+                    I ended up with.
+                </p>
+                <img src="./lab7images/noises.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Implementing and Testing Kalman Filter in Jupyter</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I implemented the Kalman Filter directly from the lab.
+                </p>
+                <img src="./lab7images/pythonKFimplementation.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    With my position, velocity, and sensor noise standard deviations set to 0.5 meters, I got the following data with 
+                    the ToF data from me getting the steady state speed above.
+                </p>
+                <img src="./lab7images/0.5kfTest.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Bringing up the noise values for the position and velocity in my model uncertainty, I used 
+                    2.0 for both position and velocity standard deviations. This causes the Kalman Filter to 
+                    trust the model less and focus more on the sensor data which got the line to basically
+                    be identical to the ToF data.
+                </p>
+                <img src="./lab7images/2kfTest.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Increasing or decreasing state uncertainty only really changed the initial values for 
+                    the Kalman Filter as I changed the values from sigma = np.array([[0.1**2, 0], [0, 0.1**2]]) to 
+                    sigma = np.array([[20**2, 0], [0, 20**2]]) and got this:
+                </p>
+                <img src="./lab7images/stateUncertainty.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I just stuck with the larger values for state uncertainty to have a closer tracking Kalman Filter at the beginning.
+                </p>
+            </div>
+
+<img src="./lab7images/stateUncertainty.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Implementing the Kalman Filter on the Robot</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I added more parameters for the bluetooth command so I could edit the noise values.
+                </p>
+                <img src="./lab7images/extraParameters.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then made my initial matrices.
+                </p>
+                <img src="./lab7images/initialMatrices.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then converted the KF Python code to C that can choose to use the measurement data 
+                    (if there is new measurement data) to update the filter. If there is no measurement data 
+                    from the ToF sensor ready, it will just skip the update step and rely solely on the model.
+                </p>
+                <img src="./lab7images/kfImplementationArduino.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I switched back to using millimeters so I had to change my m term to 140.719661065, and I also had to use much 
+                    larger variances for the noise. I ran this Kalman Filter PID code with 100 for the process noise variances, 
+                    sensor noise variance, and state uncertainty and got the video and data below.
+                </p>
+                <iframe width="617" height="1098" src="https://www.youtube.com/embed/QbK5PRgViBM" title="kf pid test run" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <img src="./lab7images/implementedKalmanFilterTimeVsDistances.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab7images/motorInputsImplementedRun.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    It performed quite well and tracked with the ToF line well, but it was quite jittery and it would fluctuate 
+                    from low to high readings as seen by the spikiness when the robot slowed down in movement at the end.
+                </p>
+            </div>
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">References</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I referenced Trevor Dales's website: https://trevordales.github.io/MAE4190/lab7/, for how to calculate the d and m terms, 
+                    and also for implementing the Kalman Filter in Python. I also referenced the lecture slides for equations here: https://fastrobotscornell.github.io/FastRobots-2025/lectures/FastRobots2025_Lecture13_Observability.pdf
+                </p>
+            </div>
+        </section>
+    </body>
+</html>
