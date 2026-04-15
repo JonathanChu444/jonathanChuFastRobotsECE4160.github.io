@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grayscale - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" style="background-color: rgb(32, 32, 32);">
+        <!-- Navigation-->
+        <section style="align-items: center; display: flex; justify-content: center; margin-top: 2%;">
+            <a href="index.html" style="color: white; align-self: center; display: flex; font-size: x-large;">Home</a>
+        </section>
+        <!-- About-->
+        <section style="align-items: center; display: flex; margin-top: 2%; max-width: 100%; padding: 10px; flex-direction: column;">
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Prelab</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I chose to do a drift stunt. I started out with my angular orientation PID code. 
+                    At first I tried entering the drive forward command, turning, and then driving forward again 
+                    as shown below.
+                </p>
+                <img src="./lab8images/firstAttempt.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    This approach didn't work since my orientation PID code relies on having an initial angle reading from the IMU 
+                    as shown below.
+                </p>
+                <img src="./lab8images/firstAttempt1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then looked at my orientation PID code inputs and realized I could set the robot to drive forward instead of stopping 
+                    when the robot is at the set angle. I also realized I could set the angle mid way through with my setpoint timer input 
+                    as shown below.
+                </p>
+                <img src="./lab8images/firstAttempt2.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    This would get rid of the delay between multiple commands and the delay from reading the initial angle. 
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Eventually I branched off my existing orientation PID command and made a new one for drifting that would drive forward 
+                    when the angle was held and also had variable forward steering on both sides of the robot. As you can see below, at the top, I 
+                    initialize two variables for whether or not the robot's inner turning wheels will drive forward or backwards. When turning, 
+                    The outer motors drive at maximum speed, while the inner motors can either slow down (while still rotating forwards) or go backwards to get an 
+                    even tighter turning radius. You can see an image of what I mean by inner and outer wheels when turning below. These two variables allow me 
+                    to slightly turn the robot while still driving forward, or do a complete 180 on the spot. I break the motorCommand from the PID into two sections 
+                    depending on how bad the PID wants the robot to turn. If it is 128 or above, the PID wants the robot to make a drastic angle change so I make the inner 
+                    turning wheels go backwards to tighten the turning radius. If it is below 128, I make the inner wheels still drive forward, but it will always be driving forward slower 
+                    than the outer turning wheels. If the PID needs the robot to turn right, the motorCommand variable will be negative. If the PID needs 
+                    the robot to turn left, the motorCommand variable will be positive. This is how it was in my original orientation PID code. The set point system is the same as before too. 
+                    When the current run time is passed the start time, the robot changes the targetYaw variable to change what angle it wants to maintain. For this stunt, it was 180 degrees, 
+                    but my code allows me to set the set point angle in the command.
+                </p>
+                <img src="./lab8images/exampleTurningRadius.jpg" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab8images/secondAttempt.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab8images/secondAttempt1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Overall, my code maintains a straight line driving forward, then when the set point time has passed, it changes the target yaw to 
+                    maintain which in this instance where we need to turn 180 degrees, makes the robot drift around and drive 180 degrees in the opposite 
+                    direction it was initially going in. The forward momentum of driving forward initially causes a J-turn, and it also causes a burnout too since the robot 
+                    struggles to gain traction fighting the initial forward momentum when driving back.
+                </p>
+            </div>
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Results</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I started the robot within 4 meters of the wall and marked the 3 foot line where the robot should start its drift. 
+                    Below are my results:
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Result 1:
+                </p>
+                <iframe width="402" height="715" src="https://www.youtube.com/embed/CefErWUEluQ" title="robot drift 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <img src="./lab8images/run1motorData.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab8images/run1yawReadings.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab8images/run1setPointReadings.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    As you can see in the motor data, the robot swings heavy between driving the left and right motors back and forth to whip around the car initially and 
+                    then counter-steering for the oversteer.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Result 2:
+                </p>
+                <iframe width="402" height="715" src="https://www.youtube.com/embed/xzyx7zTENak" title="robot drift 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>               
+                <img src="./lab8images/run2motorData.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab8images/run2yawReadings.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab8images/run2setPointReadings.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    This time the robot wanted to start turning
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Result 3:
+                </p>
+                <iframe width="402" height="715" src="https://www.youtube.com/embed/czKGbpxYQGU" title="robot drift 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>                
+                <img src="./lab8images/run3motorData.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab8images/run3yawReadings.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab8images/run3setPointReadings.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I may have set the robot closer to the wall, but it perfectly barely missed the wall when drifting and kicked the padding out. 
+                    I also made the robot drive back for a longer time.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    For every one of those results, I drove the car forwards (maintaining a 0 degree heading) at 200 PWM, and started the drift after 
+                    1 second of driving forward. Then the robot was set to turn around to maintain -180 degrees and driving forwards at 200 PWM. 
+                    I set Kp|Ki|Kd = 3.0|0.0|0.9 for every run. The Kp being set to 3.0 might've made the robot too twitchy causing the robot to oversteer 
+                    and whip back and forth as you can see in the yaw and motor readings from the tests, but seeing the robot counter-steer the oversteer was 
+                    pretty entertaining so I left the Kp, Ki, and Kd alone. Changing Ki didn't rly change much so I didn't bother tuning it. Setting the Kd any higher 
+                    made the robot not turn fast enough and any lower made the robot too twitchy.
+                </p>
+            </div>
+        </section>
+    </body>
+</html>
