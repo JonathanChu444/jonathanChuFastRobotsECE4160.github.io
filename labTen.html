@@ -105,7 +105,9 @@
                 <iframe width="1585" height="642" src="https://www.youtube.com/embed/jNTxNkaE6P4" title="Simulator Localization Vectorized 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <p style="color: white; overflow-wrap: break-word;">
                     As you can see, it took a significant amount more time for the robot to localize with the nested for loop version. By the time the iterative for loop version got half way through the 
-                    waypoints, the vectorized versions had already finished.
+                    waypoints, the vectorized versions had already finished. Also, you can see how bad the odometry model is in red compared to the ground truth in green. The belief in blue matches much 
+                    better to the ground truth. The noisy control data in the odometry motion model is what is contributing to how bad the odometry is, but the Baye's filter integrates the sensor data 
+                    which seems to significantly help the robot know where it is.
                 </p>
             </div>
 
