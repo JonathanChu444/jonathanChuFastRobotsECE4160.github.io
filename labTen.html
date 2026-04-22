@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grayscale - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" style="background-color: rgb(32, 32, 32);">
+        <!-- Navigation-->
+        <section style="align-items: center; display: flex; justify-content: center; margin-top: 2%;">
+            <a href="index.html" style="color: white; align-self: center; display: flex; font-size: x-large;">Home</a>
+        </section>
+        <!-- About-->
+        <section style="align-items: center; display: flex; margin-top: 2%; max-width: 100%; padding: 10px; flex-direction: column;">
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Prelab</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    To start the simulator, I followed the instructions here: https://fastrobotscornell.github.io/FastRobots-2026/FastRobots-Sim.html
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then went through and familiarized myself of how the Baye's Filter Algorithm works with the algorithm pseudocode below.
+                </p>
+                <img src="./lab10images/bayesFilterAlgo.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    In the lab 10 notebook they provided, there are five empty functions to help structure the implementation.
+                </p>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Implementation</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    The compute_control() function returns the first change in rotation (delta_rot_1), the straight line distance traveled by the robot (delta_trans), and 
+                    the final change in rotation when the robot gets to the waypoint (delta_rot_2). Knowing this, I basically got the Euclidean distance between the two 
+                    points and used that for delta_trans. To get the first change in rotation, I used trigonometry to determine the headings based off the change in x and change 
+                    in y of the robot. My function implementation also sets the first change in rotation to 0 if the translation was super small.
+                </p>
+                <img src="./lab10images/compute_control.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The odom_motion_model() function gives how "probable" the transition of the robot state from prev_pose to current_pose given the actual control action. 
+                    This function basically just used the Gaussian function to find the relative likelihood of x in a normal distribution with mean mu and standard deviation sigma.
+                </p>
+                <img src="./lab10images/odom_motion_model.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The prediction_step() function was interesting to implement as I initially looped through every possible combination of two states with one being the previous and the 
+                    other being the current state. Then it uses odom_motion_model() to find the probability of that transtition happening given the control action from compute_control. 
+                    It adds up all the transition probabilities and updates the temporary belief (bel_bar) with them. This function was rather slow so I utilized numpy's vectorization calculation  
+                    abilities instead of using a bunch of nested for loops.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Nested Loop Version:
+                </p>
+                <img src="./lab10images/prediction_step_0.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Vectorized Version (also skips cells with very small beliefs to save time):
+                </p>
+                <img src="./lab10images/prediction_step_1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    My sensor_model() function also utilized vectorized calculations to speed it up. It uses the Gaussian function to see the probability of the sensor measurements at that pose.
+                </p>
+                <img src="./lab10images/sensor_model.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    My update_step() function initially also iterated through every possible state first to update the belief grid with sensor_model()'s probabilities at each possible state. 
+                    This was too slow, so I used Numpy's vectorized calculations to speed it up.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Nested Loop Version:
+                </p>
+                <img src="./lab10images/update_step_0.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Vectorized Version:
+                </p>
+                <img src="./lab10images/update_step_1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Results:</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below is a video of me running the iterative nested for loop version:
+                </p>
+                <iframe width="1585" height="642" src="https://www.youtube.com/embed/-YNzs8PKmSc" title="Simulator Localization Iteration" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Below are videos of me running the vectorized versions:
+                </p>
+                <iframe width="1585" height="642" src="https://www.youtube.com/embed/arJg0DaIFc4" title="Simulator Localization Vectorized" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="1585" height="642" src="https://www.youtube.com/embed/jNTxNkaE6P4" title="Simulator Localization Vectorized 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <p style="color: white; overflow-wrap: break-word;">
+                    As you can see, it took a significant amount more time for the robot to localize with the nested for loop version. By the time the iterative for loop version got half way through the 
+                    waypoints, the vectorized versions had already finished.
+                </p>
+            </div>
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">References</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I referenced Trevor Dales's website: https://trevordales.github.io/MAE4190/lab10/, to help me better understand the Baye's Filter algorithm and 
+                    the function implementations and understanding of them.
+                </p>
+            </div>
+        </section>
+    </body>
+</html>
