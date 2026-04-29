@@ -27,15 +27,10 @@
             </div>
             <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
                 <p style="color: white; overflow-wrap: break-word;">
-                    I tested the localization in simulation first.
+                    I first tested localization in simulation. Odometry (red) is unreliable and leaves the map, while ground truth (green) remains accurate. 
+                    The belief (blue) is slightly off from ground truth, similar to lab 10, showing the algorithm works as expected.
                 </p>
                 <img src="./lab11images/simTraj.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-                <p style="color: white; overflow-wrap: break-word;">
-                    The odometry is in red, the ground truth is in green, and the belief is in blue. As you can see, 
-                    the odometry is very unreliable and goes outside the map. The belief trajectory is similar to what 
-                    we saw in lab 10, which is slightly off from the ground truth, which means the algorithm is working 
-                    as it should.
-                </p>
             </div>
 
 
@@ -45,28 +40,20 @@
             </div>
             <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
                 <p style="color: white; overflow-wrap: break-word;">
-                    Using the orientation control command I made for lab 9, I set the robot to pivot 20 degrees, 18 times, and pausing each time 
-                    to get a ToF measurement. Just like what happened in lab 9, my robot had a really hard time getting its right motor up to speed. 
-                    I tried to multiply its PWM, but there seems to be a sticking point that stops the right wheels from spinning quick enough. I 
-                    accounted for this by just pivoting about the right front wheel. I used motor braking to hold the right wheels in place 
-                    while the left wheels spun the robot around. You can see this in the video below.
+                    Using my lab 9 orientation control, I pivoted the robot 20° increments (18 times), collecting ToF data. 
+                    The right motor struggled to spin, so I pivoted about the right front wheel using motor braking (see video below). 
                 </p>
                 <iframe width="617" height="1096" src="https://www.youtube.com/embed/_fZMuLq32EE" title="Lab 11 spinning" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>                <p style="color: white; overflow-wrap: break-word;">
                     
                 <p style="color: white; overflow-wrap: break-word;">
-                    With my orientation control code working, I needed to implement the RealRobot Class which is used by the Localization class to communicate 
-                    with the real robot. Using the notification_handler function I made in lab 1, I was able to get the readings from the robot. As you can see 
-                    below, I have a data_array for the sensor data from the IMU and ToF sensor. It is then split and converted to floats to be put in their own 
-                    arrays, sensor_ranges and sensor_bearings, which were converted into numpy column arrays as required by the provided localization code. 
+                    Next, I implemented the RealRobot Class which is used by the Localization class to communicate 
+                    with the real robot. Using the notification_handler from Lab 1, I captured IMU and ToF sensor data into the instance variable self.data_array
+                    This array is parsed into separate arrays for sensor ranges and bearings, which are converted into NumPy column vectors as required by the provided localization code. 
                     Overall, I basically am just running the orientation control command and then waiting for the IMU and ToF sensor data to populate self.data_array. 
                     I also converted the ToF sensor measurements from millimeters to meters.
                 </p>
                 <img src="./lab11images/perform_observation_loop.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-                <p style="color: white; overflow-wrap: break-word;">
-                    The notification_handler below handles receiving the data. It fills the instance variable self.data_array as mentioned above.
-                </p>
                 <img src="./lab11images/notification_handler.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
-                
                 <p style="color: white; overflow-wrap: break-word;">
                     I then implemented the get_pose function. Since there is no automated method to get the real robot's ground truth pose, 
                     I used the 4 marked positions in the map and used those as the reference ground truth positions to be plotted on the 
@@ -166,16 +153,6 @@
                     side of the peninsula to the east of (-3, -2) that caused the robot to localize down further since if you look at the simulator map, the peninsula  
                     doesn't block a ray going directly east from (-0.9144 m, -0.6096 m). These small discrepencies are probably why the beliefs are shifted a bit from the 
                     truth poses
-                </p>
-                <p style="color: white; overflow-wrap: break-word;">
-                    Overall, the robot localized the best at positions (-3, -2), (5, 3), and (5, -3). The robot 
-                    localized quite well at these positions and even got a perfect localization at (5, -3). 
-                    However, something was off about position (0, 3) whether that be because of inaccurate sensor 
-                    readings, issues with the physical setup of the robot, issues with the physical setup of the obstacle course, etc., 
-                    the robot localized very poorly at that position.
-                </p>
-                <p style="color: white; overflow-wrap: break-word;">
-                    
                 </p>
             </div>
 
