@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Grayscale - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body id="page-top" style="background-color: rgb(32, 32, 32);">
+        <!-- Navigation-->
+        <section style="align-items: center; display: flex; justify-content: center; margin-top: 2%;">
+            <a href="index.html" style="color: white; align-self: center; display: flex; font-size: x-large;">Home</a>
+        </section>
+        <!-- About-->
+        <section style="align-items: center; display: flex; margin-top: 2%; max-width: 100%; padding: 10px; flex-direction: column;">
+            <div style="width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Localization In Simulation Test</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I tested the localization in simulation first.
+                </p>
+                <img src="./lab11images/simTraj.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The odometry is in red, the ground truth is in green, and the belief is in blue. As you can see, 
+                    the odometry is very unreliable and goes outside the map. The belief trajectory is similar to what 
+                    we saw in lab 10, which is slightly off from the ground truth, which means the algorithm is working 
+                    as it should.
+                </p>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Implementation on Real Robot</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    Using the orientation control command I made for lab 9, I set the robot to pivot 20 degrees, 18 times, and pausing each time 
+                    to get a ToF measurement. Just like what happened in lab 9, my robot had a really hard time getting its right motor up to speed. 
+                    I tried to multiply its PWM, but there seems to be a sticking point that stops the right wheels from spinning quick enough. I 
+                    accounted for this by just pivoting about the right front wheel. I used motor braking to hold the right wheels in place 
+                    while the left wheels spun the robot around. You can see this in the video below.
+                </p>
+                <iframe width="617" height="1096" src="https://www.youtube.com/embed/_fZMuLq32EE" title="Lab 11 spinning" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>                <p style="color: white; overflow-wrap: break-word;">
+                    
+                <p style="color: white; overflow-wrap: break-word;">
+                    With my orientation control code working, I needed to implement the RealRobot Class which is used by the Localization class to communicate 
+                    with the real robot. Using the notification_handler function I made in lab 1, I was able to get the readings from the robot. As you can see 
+                    below, I have a data_array for the sensor data from the IMU and ToF sensor. It is then split and converted to floats to be put in their own 
+                    arrays, sensor_ranges and sensor_bearings, which were converted into numpy column arrays as required by the provided localization code. 
+                    Overall, I basically am just running the orientation control command and then waiting for the IMU and ToF sensor data to populate self.data_array. 
+                    I also converted the ToF sensor measurements from millimeters to meters.
+                </p>
+                <img src="./lab11images/perform_observation_loop.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The notification_handler below handles receiving the data. It fills the instance variable self.data_array as mentioned above.
+                </p>
+                <img src="./lab11images/notification_handler.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                
+                <p style="color: white; overflow-wrap: break-word;">
+                    I then implemented the get_pose function. Since there is no automated method to get the real robot's ground truth pose, 
+                    I used the 4 marked positions in the map and used those as the reference ground truth positions to be plotted on the 
+                    map. The x and y values are in meters and I can manually input which location I want to refer to based on the location 
+                    parameter. I referenced Lalo Esparza's Lab 11 web page for this.
+                </p>
+                <img src="./lab11images/get_pose.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+            </div>
+
+
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">Results:</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    For all the plotted maps, the green dots represent the ground truth marked position and the blue dots 
+                    represent the belief position.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Localization at Position (-3 feet, -2 feet) or (-0.9144 m, -0.6096 m):
+                </p>
+                <img src="./lab11images/negThreeNegTwo.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab11images/negThreeNegTwoUpdateStepData.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The distance between the true pose and belief was 0.3044 meters. The belief probability was 0.9999867.
+                </p>
+
+                <p style="color: white; overflow-wrap: break-word;">
+                    Localization at Position (5 feet, 3 feet) or (1.524 m, 0.9144 m):
+                </p>
+                <img src="./lab11images/trial1FiveThree.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab11images/fiveThreeUpdateStepData.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The distance between the true pose and belief was 0.3044 meters. The belief probability was basically 1.
+                </p>
+
+                <p style="color: white; overflow-wrap: break-word;">
+                    Localization at Position (5 feet, -3 feet) or (1.524 m, -0.9144 m):
+                </p>
+                <img src="./lab11images/fiveNegThree.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab11images/fiveNegThreeUpdateStepData.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The distance between the true pose and belief was 0 meters. The belief probability was 0.7218. 
+                    This was interesting that the belief was perfect. It was interesting to see a lower belief 
+                    probability, but perfect belief position.
+                </p>
+
+                <p style="color: white; overflow-wrap: break-word;">
+                    Localization at Position (0 ft, 3 ft) or (0 m, 0.9144 m):
+                </p>
+                <img src="./lab11images/zeroThree.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab11images/zeroThreeUpdateStepData.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The distance between the true pose and belief pose was 1.8537 meters. The belief probability was 0.9999958. 
+                    This was interesting because the belief has an angular orientation of 90 degrees which is much different 
+                    than the 10 to -10 degree orientations of the beliefs above. This made me curious about how my data was so 
+                    different than perfect simulator data, so I went into the simulator and got range data near (0, 3).
+                </p>
+                <img src="./lab11images/zeroThreeSim1.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    I got the range data below from the robot position above.
+                </p>
+                <img src="./lab11images/zeroThreeSimRangeData.png" style="margin-left: auto; margin-right: auto; display: block;" width=25%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Then I used that data to get a belief position below
+                </p>
+                <img src="./lab11images/zeroThreeSim.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <img src="./lab11images/zeroThreeSimUpdateStepData.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The distance is far closer at 0.305 meters and the belief's orientation is similar to the other beliefs above, at 10 degrees. 
+                    Looking at the data I got from my robot, I got these range readings at (0 ft, 3 ft):
+                </p>
+                <img src="./lab11images/zeroThreeRangeData.png" style="margin-left: auto; margin-right: auto; display: block;" width=15%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    The biggest range differences seem to be at the ends where the simulated robot reads a range of 2.05 meters and my robot reads 
+                    a range of 0.952 meters. This probably has to do with inaccuracies with the ToF sensor and the actual walls of the course not being 
+                    perfectly lined up like in the simulator, because when I plotted out the full map of all the range data, the map produced was pretty 
+                    close to what the actual map looks like. However, there are obvious outliers and inaccuracies, especially near the island in the middle 
+                    of the map.
+                </p>
+                <img src="./lab11images/final_mapping.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
+                <p style="color: white; overflow-wrap: break-word;">
+                    It seems that when getting the range data at position (0, 3), the robot ended up catching different points along the 
+                    walls which could be from the angular orientation inaccuracies since my code had the robot stop if it was within 0.5 degrees 
+                    of the 20 degree increments. You can also see that as the ToF sensor needs to read far distances, like the green dot reading at 
+                    around (2500, 600), the ToF sensor is far off compared to the closer ToF sensor readings from the blue dots on the upper right corner of the map. 
+                    This could be from how my sensor isn't perfectly perendicular with floor since the ToF sensor is mounted with just double sided tape on the front 
+                    of the robot. This could cause larger inaccuracies, the further the sensor is away since the sensor is basically getting a hypoteneuse of the range since 
+                    the ToF sensor is angled up.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    One thing I noticed is that at positions (-3, -2), (5, 3), and the simulated run at (0, 3), the belief position would only be different 
+                    on one axis. So it was either a vertical or horizontal translation and that was it. The belief positions also interestingly biased one side vs 
+                    another like at (-3, -2) where the belief position was very close to the south most wall, which is odd since in the final mapping, you can see
+                    that the wall to the north of (-3, -2) seems to actually be closer than the southern wall. It could be because of the stray red dot on the northern 
+                    side of the peninsula to the east of (-3, -2) that caused the robot to localize down further since if you look at the simulator map, the peninsula  
+                    doesn't block a ray going directly east from (-0.9144 m, -0.6096 m). These small discrepencies are probably why the beliefs are shifted a bit from the 
+                    truth poses
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Overall, the robot localized the best at positions (-3, -2), (5, 3), and (5, -3). The robot 
+                    localized quite well at these positions and even got a perfect localization at (5, -3). 
+                    However, something was off about position (0, 3) whether that be because of inaccurate sensor 
+                    readings, issues with the physical setup of the robot, issues with the physical setup of the obstacle course, etc., 
+                    the robot localized very poorly at that position.
+                </p>
+                <p style="color: white; overflow-wrap: break-word;">
+                    
+                </p>
+            </div>
+
+            <div style="margin: 2%; width: 100%; max-width: 1000px;">
+                <h1 style="color: white;">References</h1>
+            </div>
+            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
+                <p style="color: white; overflow-wrap: break-word;">
+                    I referenced Lalo Esparza's website: https://he249619.github.io/fastrobots-2026/Pages/Lab11.html, to help me with implementing the get_pose 
+                    function.
+                </p>
+            </div>
+        </section>
+    </body>
+</html>
