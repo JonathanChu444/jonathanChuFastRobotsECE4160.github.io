@@ -195,7 +195,12 @@
                 <iframe width="617" height="1096" src="https://www.youtube.com/embed/SSmy7H7TjL4" title="Stop tolerance inverted pendulum test" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <p style="color: white; overflow-wrap: break-word;">
                     Again, no visible improvement in performance, so I tuned the stop tolerance, set angle to hold, and I removed the low pass filter to see 
-                    if it helped.
+                    if it helped. After a lot of tuning, I couldn't get active braking to work, so I disabled it and below is the best performance I got from 
+                    Kp = 6.0, Ki = 0.0, Kd = 9.0, 40 PWM minium motor input, -1.5 degree set angle to hold, no low pass filter, and 0.1 degrees stop tolerance.
+                </p>
+                <iframe width="617" height="1096" src="https://www.youtube.com/embed/fRWPfCFnig8" title="Best performing inverted pendulum test" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <p style="color: white; overflow-wrap: break-word;">
+                    Note that the robot dropped at the end because the timer for when to stop the inverted pendulum ended.
                 </p>
             </div>
 
