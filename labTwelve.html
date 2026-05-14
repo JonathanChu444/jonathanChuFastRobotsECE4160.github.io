@@ -31,12 +31,10 @@
                     I did not modify anything on my robot.
                 </p>
                 <p style="color: white; overflow-wrap: break-word;">
-                    The problem with this is that my IMU was laid flat parallel to the floor when the robot is flat on four wheels. 
-                    In an inverted pendulum setup, the robot needs to be up on two wheels, perpendicular to the floor. This means 
-                    the IMU also ends up perpendicular with the floor. When the IMU is 90 degrees with the floor, tilting it forwards 
-                    or backwards just brings the readings closer to zero as seen in the data below. This wouldn't work with my PID controller 
-                    since the controller would think that tilting forward and backwards are the same thing and would only spin the motors 
-                    in one direction.
+                    The issue is that my IMU was mounted flat and parallel to the floor when the robot was resting on four wheels. 
+                    However, in the inverted pendulum setup, the robot stands on two wheels, making the IMU perpendicular to the floor. 
+                    At this 90-degree orientation, tilting forward or backward only moves the readings closer to zero, as shown in the data below. 
+                    This would not work with my PID controller because it would interpret forward and backward tilt the same way, causing the motors to spin in only one direction.
                 </p>
                 <div style="flex-direction:row; display:flex">
                     <img src="./lab12images/IMUdata1.png" style="margin-left: auto; margin-right: auto; display: block;" width=15% height="700">
@@ -74,11 +72,10 @@
                 <img src="./lab12images/testOnePitchAngles.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
                 <img src="./lab12images/testOneMotorInputs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
                 <p style="color: white; overflow-wrap: break-word;">
-                    As you can see from when I am holding the robot in the air and from the data, the motors respond well to changes in angle, however 
-                    when the robot is placed on the ground, the motors don't have any power to keep the robot upright. It takes a while for the motor 
-                    commands to go high enough to have any affect on the robot, and by that time the robot would've already fallen. As I tested before 
-                    with the motor PWM inputs, there is a minimum PWM input before the robot even starts moving, and so I needed to determine a good 
-                    minimum command for when the robot was on two wheels.
+                    As you can see from when I am holding the robot in the air and from the data, the motors respond well to changes in angle, 
+                    however when the robot is placed on the ground, the motors don't receive a high enough PWM signal soon enough to effectively 
+                    move the robot, which causes the robot to fall. There is a minimum PWM input before the robot even starts moving, and so 
+                    I needed to determine a good minimum command for when the robot was on two wheels.
                 </p>
                 <p style="color: white; overflow-wrap: break-word;">
                     I used the minimum command clamp I made for the motor lab as shown below. This would raise any motor command input less than 
@@ -86,8 +83,8 @@
                 </p>
                 <img src="./lab12images/minCommandClamp.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
                 <p style="color: white; overflow-wrap: break-word;">
-                    I used a couple different minimum commands from 30-40 and the robot twitched back and forth because of it.
-                    However, the robot still responded very slowly to changes as seen in the video below. 
+                    I used a couple different minimum commands from 30-40 and the robot twitched back and forth because of it. 
+                    However, the robot would quickly fall over as it couldn’t adequately correct itself with how low the PWM.
                 </p>
                 <iframe width="617" height="1098" src="https://www.youtube.com/embed/7YKZz44WHkw" title="Test 2 inverted pendulum" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <p style="color: white; overflow-wrap: break-word;">
@@ -97,9 +94,9 @@
                 <img src="./lab12images/kpSixPitchAngles.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
                 <img src="./lab12images/kpSixMotorInputs.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
                 <p style="color: white; overflow-wrap: break-word;">
-                    Note that the PWM values in the plot don't show the clamped values, just the raw PID control input.
-                    As you can see from the video and the motor input data, the robot responded a lot quicker, but as you can see at 8 seconds 
-                    in the video and from the data, the robot would overshoot quite a lot. So I tried upping the Kd value all the way up to 6.0.
+                    Note that the PWM values in the plot don't show the clamped values, just the raw PID control input. 
+                    As you can see from the video and the motor input data, the robot responded a lot quicker, but as you can see at 
+                    8 seconds in the video and from the data, the robot would overshoot quite a lot, so I increased the Kd value to 6.0.
                 </p>
                 <iframe width="617" height="1098" src="https://www.youtube.com/embed/53z5mw0sH1k" title="Kd = 6 test inverted pendulum" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <img src="./lab12images/kd6PitchAngles.png" style="margin-left: auto; margin-right: auto; display: block;" width=75%>
@@ -194,26 +191,15 @@
                 </p>
                 <iframe width="617" height="1096" src="https://www.youtube.com/embed/SSmy7H7TjL4" title="Stop tolerance inverted pendulum test" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <p style="color: white; overflow-wrap: break-word;">
-                    Again, no visible improvement in performance, so I tuned the stop tolerance, set angle to hold, and I removed the low pass filter to see 
-                    if it helped. After a lot of tuning, I couldn't get active braking to work, so I disabled it and below is the best performance I got from 
-                    Kp = 6.0, Ki = 0.0, Kd = 9.0, 40 PWM minium motor input, -1.5 degree set angle to hold, no low pass filter, and 0.1 degrees stop tolerance.
+                    Again, no visible improvement in performance, so I tuned the stop tolerance, hold angle, and removed the low pass filter to quicken the reactions to sudden changes. 
+                    My robot wouldn’t active brake, so I disabled it and below are the best performances I got from Kp = 6.0, Ki = 0.0, Kd = 9.0, 
+                    40 PWM minimum motor input, -1.5 degree set angle to hold, and 0.1 degrees stop tolerance.
                 </p>
                 <iframe width="617" height="1096" src="https://www.youtube.com/embed/fRWPfCFnig8" title="Best performing inverted pendulum test" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <iframe width="617" height="1096" src="https://www.youtube.com/embed/-wWmFghKlQc" title="Final Inverted Pendulum Test" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <iframe width="617" height="1096" src="https://www.youtube.com/embed/b3TDUr2zBsY" title="Final inverted pendulum test 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 <p style="color: white; overflow-wrap: break-word;">
                     Note that the robot dropped at the end of these videos because the timer for when to stop the inverted pendulum ended.
-                </p>
-            </div>
-
-
-
-            <div style="margin: 2%; width: 100%; max-width: 1000px;">
-                <h1 style="color: white;">References</h1>
-            </div>
-            <div style="margin: 2%; padding: 10px; background-color: darkslategray; width: 100%; max-width: 1000px; border-width: 10px; border-radius: 8px;">
-                <p style="color: white; overflow-wrap: break-word;">
-                    
                 </p>
             </div>
         </section>
