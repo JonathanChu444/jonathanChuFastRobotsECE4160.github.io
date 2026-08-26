@@ -3,63 +3,173 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Grayscale - Start Bootstrap Theme</title>
+        <meta name="description" content="Jonathan Chu's ECE4160 Fast Robots lab portfolio, covering Bluetooth, sensors, control systems, mapping, localization, and an inverted pendulum robot." />
+        <meta name="author" content="Jonathan Chu" />
+        <title>Jonathan Chu | ECE4160 Lab Portfolio</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
-    <body id="page-top" style="background-color: black;">
-        <!-- Navigation-->
-        <!-- <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-            <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#page-top">Start Bootstrap</a>
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#signup">Contact</a></li>
-                    </ul>
+    <body id="page-top" class="portfolio-home">
+        <header class="site-hero">
+            <nav class="portfolio-nav" aria-label="Portfolio navigation">
+                <a class="nav-brand" href="#page-top">Jonathan Chu</a>
+                <div class="nav-links">
+                    <a href="#highlights">Highlights</a>
+                    <a href="#labs">Labs</a>
+                    <a href="labTwelve.html">Final Project</a>
                 </div>
-            </div>
-        </nav> -->
-        <!-- Masthead-->
-        <header class="masthead">
-            <div class="container px-4 px-lg-5 d-flex h-100 align-items-center justify-content-center">
-                <div class="d-flex justify-content-center">
-                    <div class="text-center">
-                        <h1 class="mx-auto my-0 text-uppercase">ECE4160 Lab Portfolio</h1>
-                        <h2 class="text-white-50 mx-auto mt-2 mb-5">Hello, I am Jonathan Chu. I am a CS major interested in Robotics!</h2>
-                        <img src="1658441688002.jpg" style="margin-left: auto; margin-right: auto; display: block; margin-bottom: 60px; border-radius: 100px;" width=25%>
-                        <!-- <a class="btn btn-primary" href="#about">Get Started</a> -->
-                        <div style = "flex-direction: column; align-items: center; display: flex;">
-                            <h2 style="font-size: xx-large; color: white">Links to Labs</h2>
-                            <a href="labOne.html" style="color: white; font-size: x-large;">Lab 1: Artemis and Bluetooth</a>
-                            <a href="labTwo.html" style="color: white; font-size: x-large;">Lab 2: IMU</a>
-                            <a href="labThree.html" style="color: white; font-size: x-large;">Lab 3: ToF</a>
-                            <a href="labFour.html" style="color: white; font-size: x-large;">Lab 4: Motors and Open Loop Control</a>
-                            <a href="labFive.html" style="color: white; font-size: x-large;">Lab 5: Linear PID and Linear Interpolation</a>
-                            <a href="labSix.html" style="color: white; font-size: x-large;">Lab 6: Orientation PID</a>
-                            <a href="labSeven.html" style="color: white; font-size: x-large;">Lab 7: Kalman Filter</a>
-                            <a href="labEight.html" style="color: white; font-size: x-large;">Lab 8: Stunts!</a>
-                            <a href="labNine.html" style="color: white; font-size: x-large;">Lab 9: Mapping</a>
-                            <a href="labTen.html" style="color: white; font-size: x-large;">Lab 10: Localization (Sim)</a>
-                            <a href="labEleven.html" style="color: white; font-size: x-large;">Lab 11: Localization (Real)</a>
-                            <a href="labTwelve.html" style="color: white; font-size: x-large;">Lab 12: Inverted Pendulum</a>
-                        </div>
+            </nav>
+
+            <div class="hero-shell">
+                <section class="hero-copy" aria-labelledby="portfolio-title">
+                    <p class="eyebrow">ECE 4160 Fast Robots</p>
+                    <h1 id="portfolio-title">Robotics lab portfolio</h1>
+                    <p class="hero-lead">
+                        A semester of embedded systems, sensing, controls, mapping, localization, and fast robot iteration,
+                        documented through weekly labs and a final inverted pendulum build.
+                    </p>
+                    <div class="hero-actions" aria-label="Primary links">
+                        <a class="primary-action" href="#labs">Browse labs</a>
+                        <a class="secondary-action" href="labTwelve.html">View final project</a>
                     </div>
-                </div>
+                </section>
+
+                <aside class="hero-visual" aria-label="Profile summary">
+                    <img src="1658441688002.jpg" alt="Jonathan Chu" />
+                    <div class="profile-note">
+                        <span>CS major</span>
+                        <p>Interested in robotics, autonomy, and the software that makes physical systems behave.</p>
+                    </div>
+                </aside>
             </div>
         </header>
+
+        <main>
+            <section class="section-band intro-band" id="highlights" aria-labelledby="highlights-title">
+                <div class="section-heading">
+                    <p class="eyebrow">Selected work</p>
+                    <h2 id="highlights-title">From sensing to autonomy</h2>
+                    <p>
+                        The portfolio follows a progression from board bring-up and sensor characterization to feedback control,
+                        probabilistic state estimation, and full robot behaviors.
+                    </p>
+                </div>
+
+                <div class="highlight-grid">
+                    <article class="feature-panel">
+                        <img src="lab7images/implementedKalmanFilterTimeVsDistances.png" alt="Kalman filter distance estimate plot" />
+                        <div>
+                            <span>State estimation</span>
+                            <h3>Kalman filtering</h3>
+                            <p>Modeled distance measurements and motor inputs to estimate robot state during fast motion.</p>
+                        </div>
+                    </article>
+                    <article class="feature-panel">
+                        <img src="lab9images/finalMappingWithLines.png" alt="Line-based map created from robot scan data" />
+                        <div>
+                            <span>Mapping</span>
+                            <h3>Environment reconstruction</h3>
+                            <p>Converted scans into spatial maps and line features for later localization experiments.</p>
+                        </div>
+                    </article>
+                    <article class="feature-panel">
+                        <img src="lab12images/estimatedPitchSystem.png" alt="Pitch angle data from inverted pendulum robot" />
+                        <div>
+                            <span>Controls</span>
+                            <h3>Inverted pendulum</h3>
+                            <p>Tuned feedback behavior around IMU data, latency, motor limits, and physical constraints.</p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section-band labs-band" id="labs" aria-labelledby="labs-title">
+                <div class="section-heading">
+                    <p class="eyebrow">Complete archive</p>
+                    <h2 id="labs-title">Lab reports</h2>
+                    <p>Each report includes setup notes, experiments, plots, code screenshots, videos, and reflections from the build process.</p>
+                </div>
+
+                <div class="lab-grid">
+                    <a class="lab-card" href="labOne.html">
+                        <span class="lab-number">Lab 01</span>
+                        <div class="lab-thumb"><img src="installing3rdPartyBoard.png" alt="Arduino board manager setup" /></div>
+                        <h3>Artemis and Bluetooth</h3>
+                        <p>Board setup, BLE configuration, and command handling.</p>
+                    </a>
+                    <a class="lab-card" href="labTwo.html">
+                        <span class="lab-number">Lab 02</span>
+                        <div class="lab-thumb"><img src="lab2images/IMG_7634.jpg" alt="IMU hardware setup" /></div>
+                        <h3>IMU</h3>
+                        <p>Accelerometer, gyroscope, filtering, and signal analysis.</p>
+                    </a>
+                    <a class="lab-card" href="labThree.html">
+                        <span class="lab-number">Lab 03</span>
+                        <div class="lab-thumb"><img src="lab3images/twoToFmeasurements.jpg" alt="Two time-of-flight sensors on robot hardware" /></div>
+                        <h3>Time of Flight</h3>
+                        <p>Sensor wiring, calibration, ranging, and sampling behavior.</p>
+                    </a>
+                    <a class="lab-card" href="labFour.html">
+                        <span class="lab-number">Lab 04</span>
+                        <div class="lab-thumb"><img src="lab4images/wiredUp.jpg" alt="Motor driver wiring on robot" /></div>
+                        <h3>Motors and Open Loop</h3>
+                        <p>Motor drivers, PWM outputs, wiring, and open-loop movement.</p>
+                    </a>
+                    <a class="lab-card" href="labFive.html">
+                        <span class="lab-number">Lab 05</span>
+                        <div class="lab-thumb"><img src="lab5images/workingMotorInputs.png" alt="Motor input plot" /></div>
+                        <h3>Linear PID</h3>
+                        <p>Closed-loop distance control and linear interpolation.</p>
+                    </a>
+                    <a class="lab-card" href="labSix.html">
+                        <span class="lab-number">Lab 06</span>
+                        <div class="lab-thumb"><img src="lab6images/setpoints.png" alt="Yaw setpoint plot" /></div>
+                        <h3>Orientation PID</h3>
+                        <p>Yaw control, low-pass filtering, and PID tuning.</p>
+                    </a>
+                    <a class="lab-card" href="labSeven.html">
+                        <span class="lab-number">Lab 07</span>
+                        <div class="lab-thumb"><img src="lab7images/implementedKalmanFilterTimeVsDistances.png" alt="Kalman filter implementation plot" /></div>
+                        <h3>Kalman Filter</h3>
+                        <p>State modeling, noise estimates, and fast distance estimation.</p>
+                    </a>
+                    <a class="lab-card" href="labEight.html">
+                        <span class="lab-number">Lab 08</span>
+                        <div class="lab-thumb"><img src="lab8images/secondAttempt1.png" alt="Robot stunt attempt data" /></div>
+                        <h3>Stunts</h3>
+                        <p>High-speed maneuvers, turn radius experiments, and tuning.</p>
+                    </a>
+                    <a class="lab-card" href="labNine.html">
+                        <span class="lab-number">Lab 09</span>
+                        <div class="lab-thumb"><img src="lab9images/finalMapping.png" alt="Final mapping plot" /></div>
+                        <h3>Mapping</h3>
+                        <p>Coordinate transforms, polar scans, and map generation.</p>
+                    </a>
+                    <a class="lab-card" href="labTen.html">
+                        <span class="lab-number">Lab 10</span>
+                        <div class="lab-thumb"><img src="lab10images/bayesFilterAlgo.png" alt="Bayes filter algorithm screenshot" /></div>
+                        <h3>Localization Simulation</h3>
+                        <p>Bayes filtering and simulated pose belief updates.</p>
+                    </a>
+                    <a class="lab-card" href="labEleven.html">
+                        <span class="lab-number">Lab 11</span>
+                        <div class="lab-thumb"><img src="lab11images/final_mapping.png" alt="Real robot localization map" /></div>
+                        <h3>Localization Real</h3>
+                        <p>Real-world scans, observation loops, and pose estimation.</p>
+                    </a>
+                    <a class="lab-card" href="labTwelve.html">
+                        <span class="lab-number">Lab 12</span>
+                        <div class="lab-thumb"><img src="lab12images/batteryMounting.jpg" alt="Battery mounting for inverted pendulum robot" /></div>
+                        <h3>Inverted Pendulum</h3>
+                        <p>Balance control, latency reduction, and final robot behavior.</p>
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer class="portfolio-footer">
+            <p>Jonathan Chu | ECE4160 Fast Robots</p>
+            <a href="#page-top">Back to top</a>
+        </footer>
     </body>
 </html>
